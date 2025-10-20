@@ -77,7 +77,15 @@ class ApiController extends Controller
 
     // Refresh Token API
     public function refreshToken() {
+        auth()->user()->token()->revoke();
+        $user = auth()->user();
+        $token = $user->createToken("myToken")->accessToken;
 
+        return response()->json([
+            "status" => true,
+            "message" => "Token re-issued",
+            "token" => $token
+        ]);
     }
 
     // Logout API
